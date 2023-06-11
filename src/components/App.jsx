@@ -4,6 +4,7 @@ import {Searchbar} from './SearchBar/SearchBar';
 import { Modal } from "./Modal/Modal";
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import css from './Button/Button.module.css'
+import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem";
 
 
 export function App () {
@@ -40,12 +41,12 @@ export function App () {
           showModal={showModal}
           searchQuery={searchQuery}
         />
-        {isShowModal && (
+        {isShowModal && 
           <Modal
             closeModal={closeModal}
             modalImage={modalImage}
           />
-        )}
+        }
         <ToastContainer className={css.toaster} autoClose={1000} theme="colored" />
         </div>
       </>
