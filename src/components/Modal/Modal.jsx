@@ -1,12 +1,12 @@
 import { useState , useEffect } from "react";
 import css from './Modal.module.css';
 
-export function Modal ( closeModal , modalImage) {
+export function Modal ( {closeModal , modalImage} ) {
   // componentDidMount() {
   //   window.addEventListener('keydown', this.handleKeyDown);
   // }
   useEffect(() => {
-    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
   } , [])
 
   // componentWillUnmount() {
@@ -14,9 +14,9 @@ export function Modal ( closeModal , modalImage) {
   // }
   useEffect(()=> {
     return () => {
-      window.removeEventListener('keydown', this.handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     }
-  } , []);
+  });
 
   const handleKeyDown = event => {
     if (event.code === 'Escape') {

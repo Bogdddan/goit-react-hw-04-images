@@ -12,10 +12,9 @@ export function App (){
   //   isShowModal: false,
   //   modalImage: '',
   // };
-  const [ searchQuery , setSearchQuery ] = useState('');
-  const [ isShowModal , setIsShowModal ] = useState(false);
-  const [ modalImage , setModalImage ] = useState('');
-
+  const [ searchQuery , setSearchQuery ] = useState('')
+  const [ isShowModal , setIsShowModal ] = useState(false)
+  const [ modalImage , setModalImage ] = useState('')
 
 
   const handleFormSubmit = searchQuery => {
@@ -23,15 +22,14 @@ export function App (){
   };
 
   const showModal = largeImageURL => {
-    setIsShowModal({ isShowModal: true,  });
+    setIsShowModal({ isShowModal: true });
     // modalImage: largeImageURL
-    setModalImage({ largeImageURL })
+    setModalImage( largeImageURL )
   };
 
   const closeModal = () => {
     setIsShowModal({ isShowModal: false });
   };
-
 
     return (
       <>
@@ -51,5 +49,4 @@ export function App (){
         </div>
       </>
     );
-
 }
