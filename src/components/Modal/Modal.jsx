@@ -1,35 +1,43 @@
-import React, { Component } from "react";
+import { useState , useEffect } from "react";
 import css from './Modal.module.css';
 
-export class Modal extends Component {
-  componentDidMount() {
+export function Modal ( closeModal , modalImage) {
+  // componentDidMount() {
+  //   window.addEventListener('keydown', this.handleKeyDown);
+  // }
+  useEffect(() => {
     window.addEventListener('keydown', this.handleKeyDown);
-  }
+  } , [])
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('keydown', this.handleKeyDown);
+  // }
+  useEffect(()=> {
+    return () => {
+      window.removeEventListener('keydown', this.handleKeyDown);
+    }
+  } , []);
 
-  handleKeyDown = event => {
+  const handleKeyDown = event => {
     if (event.code === 'Escape') {
-      this.props.closeModal();
+      closeModal();
     }
   };
 
-  handleBackdropClick = event => {
+  const handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.closeModal();
+      closeModal();
     }
   };
 
-  render() {
+
     return (
-      <div onClick={this.handleBackdropClick} className={css.overlay}>
+      <div onClick={handleBackdropClick} className={css.overlay}>
         <div className={css.modal}>
-          <button onClick={this.props.closeModal} className={css.closeButton}>X</button>
-          <img src={this.props.modalImage} alt="modalImage" />
+          <button onClick={closeModal} className={css.closeButton}>X</button>
+          <img src={modalImage} alt="modalImage" />
         </div>
       </div>
     );
-  }
+
 }
