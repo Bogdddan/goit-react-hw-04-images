@@ -1,37 +1,37 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import {Searchbar} from './SearchBar/SearchBar';
 import { Modal } from "./Modal/Modal";
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import css from './Button/Button.module.css'
-import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem";
 
 
-export function App () {
+export function App (){
   // state = {
   //   searchQuery: '',
   //   isShowModal: false,
   //   modalImage: '',
   // };
-  const [ searchQuery , setSearchQuery] = useState('');
-  const [ isShowModal , setisShowModal ] = useState(false);
-  const [ modalImage , setmodalImage ] = useState('');
+  const [ searchQuery , setSearchQuery ] = useState('');
+  const [ isShowModal , setIsShowModal ] = useState(false);
+  const [ modalImage , setModalImage ] = useState('');
+
+
 
   const handleFormSubmit = searchQuery => {
     setSearchQuery( searchQuery );
   };
 
   const showModal = largeImageURL => {
-    // this.setState({ isShowModal: true, modalImage: largeImageURL });
-    setisShowModal({isShowModal : true})
-    setmodalImage( {modalImage : largeImageURL} )
-
+    setIsShowModal({ isShowModal: true,  });
+    // modalImage: largeImageURL
+    setModalImage({ largeImageURL })
   };
 
   const closeModal = () => {
-    // this.setState({ isShowModal: false });
-    setisShowModal( {isShowModal : false} )
+    setIsShowModal({ isShowModal: false });
   };
+
 
     return (
       <>
@@ -41,14 +41,15 @@ export function App () {
           showModal={showModal}
           searchQuery={searchQuery}
         />
-        {isShowModal && 
+        {isShowModal && (
           <Modal
             closeModal={closeModal}
             modalImage={modalImage}
           />
-        }
+        )}
         <ToastContainer className={css.toaster} autoClose={1000} theme="colored" />
         </div>
       </>
     );
+
 }
