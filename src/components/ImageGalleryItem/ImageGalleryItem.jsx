@@ -1,12 +1,10 @@
-import React , { Component } from "react";
+import React from "react";
 import css from './ImageGalley.module.css'
 
-export class ImageGalleryItem extends Component {
-  render() {
+export function ImageGalleryItem ({ showModal , smallImg , alt }) {
     return (
-      <li className={css.ImgGalleryli} onClick={this.props.showModal}>
-        <img src={this.props.smallImg} alt={this.props.alt} />
+      <li className={css.ImgGalleryli} onClick={showModal}>
+        <img src={smallImg} alt={alt} />
       </li>
     );
-  }
 }
