@@ -22,7 +22,7 @@ export function App (){
   };
 
   const showModal = largeImageURL => {
-    setIsShowModal({ isShowModal: true });
+    setIsShowModal( !isShowModal );
     // modalImage: largeImageURL
     setModalImage( largeImageURL )
   };

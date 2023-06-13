@@ -1,33 +1,30 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { toast } from 'react-toastify';
 import css from './Searchbar.module.css';
 
-export class Searchbar extends Component {
-    state = {
-      searchQuery: '',
+export function Searchbar ({ onSubmit }) {
+    const [ searchQuery , setSearchQuery ] = useState('');
+  
+    const handleQueryChange = event => {
+      setSearchQuery( event.currentTarget.value.toLowerCase() );
     };
   
-    handleQueryChange = event => {
-      this.setState({ searchQuery: event.currentTarget.value.toLowerCase() });
-    };
-  
-    handleSubmit = event => {
+    const handleSubmit = event => {
       event.preventDefault();
-      if (this.state.searchQuery.trim() === '') {
+      if (searchQuery.trim() === '') {
         toast.error('Enter a keyword');
         return;
       }
-      this.props.onSubmit(this.state.searchQuery);
-      this.setState({ searchQuery: '' });
+      onSubmit(searchQuery);
+      setSearchQuery( '' );
     };
   
-    render() {
       return (
-        <div onSubmit={this.handleSubmit} className="searchbar">
+        <div onSubmit={handleSubmit} className="searchbar">
           <form className={css.form}>
             <input
-              onChange={this.handleQueryChange}
-              value={this.state.searchQuery}
+              onChange={handleQueryChange}
+              value={searchQuery}
               className={css.input}
               type="text"
               autoComplete="off"
@@ -40,5 +37,4 @@ export class Searchbar extends Component {
           </form>
         </div>
       );
-    }
   }
