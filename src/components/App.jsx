@@ -28,7 +28,7 @@ export function App (){
   };
 
   const closeModal = () => {
-    setIsShowModal({ isShowModal: false });
+    setIsShowModal( !isShowModal);
   };
 
     return (
