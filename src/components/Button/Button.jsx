@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import css from './Button.module.css';
 
 
-export class Button extends Component {
-  render() {
+export function Button ({ onFindMore }) {
     return (
       <button
       className={css.buttonLoadMore}
-        onClick={this.props.onFindMore}
+        onClick={onFindMore}
         type="button"
       >
         Load more
       </button>
     );
-  }
 }
