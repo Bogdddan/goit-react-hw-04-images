@@ -25,6 +25,7 @@
     position: absolute;
     top: 70px;
     right: 250px;
+    cursor: pointer;
   }
 
   .closeButton:hover{

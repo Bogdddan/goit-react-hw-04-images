@@ -4,8 +4,8 @@ import css from './Button.module.css';
 
 export function Button ({ onFindMore }) {
     return (
-      <button
-      className={css.buttonLoadMore}
+        <button
+        className={css.buttonLoadMore}
         onClick={onFindMore}
         type="button"
       >

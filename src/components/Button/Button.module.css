@@ -3,7 +3,11 @@
     border-radius: 10px;
     background-color: darkseagreen;
     padding: 0 5px;
-    margin: 10px 0;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .buttonLoadMore:hover{
     scale: 1.1;
