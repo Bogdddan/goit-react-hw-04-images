@@ -1,4 +1,4 @@
-import { useState , useEffect } from "react";
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import {Searchbar} from './SearchBar/SearchBar';
 import { Modal } from "./Modal/Modal";
