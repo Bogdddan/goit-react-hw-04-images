@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Loader } from 'components/Loader/Loader';
@@ -7,81 +7,79 @@ import { fetchGalleryImg } from '../Api/Api';
 import css from './imageGallery.module.css';
 
 export const ImageGallery = (props) => {
-    const [images, setImages] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1);
-    const [hiddenBtn, setHiddenBtn] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+  const [images, setImages] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hiddenBtn, setHiddenBtn] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-    const prevSearchQuery = useRef('');
-    const prevPage = useRef(1);
+  const prevSearchQuery = useRef('');
+  const prevPage = useRef(1);
 
-    useEffect(() => {
-        if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page) {
-            setLoading(true);
-            setImages(null);
-            setPage(1);
-            setHiddenBtn(false);
-            setSearchQuery(props.searchQuery);
-            fetchImages();
+  const fetchImages = useCallback(() => {
+    setLoading(true);
+
+    fetchGalleryImg(searchQuery, page)
+      .then(({ hits, totalHits }) => {
+        if (hits.length === 0) {
+          showErrorMsg();
+          setHiddenBtn(true);
+        } else {
+          setImages((prevImages) => (prevImages ? [...prevImages, ...hits] : hits));
         }
-        prevSearchQuery.current = props.searchQuery;
-        prevPage.current = page;
-    }, [props.searchQuery, page]);
+        if (12 * page > totalHits) {
+          setHiddenBtn(true);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching images:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [searchQuery, page]);
 
-    const showErrorMsg = () => {
-        toast.error(`За вашим результатом нічого не знайдено`);
-    };
+  useEffect(() => {
+    if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page) {
+      setLoading(true);
+      setImages(null);
+      setPage(1);
+      setHiddenBtn(false);
+      setSearchQuery(props.searchQuery);
+      fetchImages();
+    }
+    prevSearchQuery.current = props.searchQuery;
+    prevPage.current = page;
+  }, [props.searchQuery, page, fetchImages]);
 
-    const fetchImages = () => {
-        setLoading(true);
+  const showErrorMsg = () => {
+    toast.error(`За вашим результатом нічого не знайдено`);
+  };
 
-        fetchGalleryImg(searchQuery, page)
-            .then(({ hits, totalHits }) => {
-                if (hits.length === 0) {
-                    showErrorMsg();
-                    setHiddenBtn(true);
-                } else {
-                    setImages(prevImages => (prevImages ? [...prevImages, ...hits] : hits));
-                }
-                if (12 * page > totalHits) {
-                    setHiddenBtn(true);
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching images:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
+  const loadMoreImages = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
-    const loadMoreImages = () => {
-        setPage(prevPage => prevPage + 1);
-    };
+  const isButtonDisabled = !images || hiddenBtn;
 
-    const isButtonDisabled = !images || hiddenBtn;
+  return (
+    <>
+      {loading && <Loader />}
 
-    return (
-        <>
-            {loading && <Loader />}
+      {images && (
+        <ul className={css.imageGalleryUl}>
+          {images.map((image) => (
+            <ImageGalleryItem
+              showModal={() => props.showModal(image.largeImageURL)}
+              key={image.id}
+              smallImg={image.webformatURL}
+              alt={image.tags}
+            />
+          ))}
+        </ul>
+      )}
 
-            {images && (
-                <ul className={css.imageGalleryUl}>
-                    {images.map((image) => (
-                        <ImageGalleryItem
-                            showModal={() => props.showModal(image.largeImageURL)}
-                            key={image.id}
-                            smallImg={image.webformatURL}
-                            alt={image.tags}
-                        />
-                    ))}
-                </ul>
-            )}
-
-            {images && !hiddenBtn && (
-                <Button onFindMore={loadMoreImages} disabled={isButtonDisabled} />
-            )}
-        </>
-    );
+      {images && !hiddenBtn && <Button onFindMore={loadMoreImages} disabled={isButtonDisabled} />}
+    </>
+  );
 };
