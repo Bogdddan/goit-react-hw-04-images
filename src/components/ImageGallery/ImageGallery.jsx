@@ -42,7 +42,6 @@ export const ImageGallery = (props) => {
   useEffect(() => {
     if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page) {
       setLoading(true);
-      setImages(null);
       setPage(1);
       setHiddenBtn(false);
       setSearchQuery(props.searchQuery);
