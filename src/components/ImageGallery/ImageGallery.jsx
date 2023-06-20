@@ -21,10 +21,14 @@ export const ImageGallery = (props) => {
 
     fetchGalleryImg(searchQuery, page)
       .then(({ hits, totalHits }) => {
+        if(searchQuery === ''){
+          return
+        }
         if (hits.length === 0) {
           showErrorMsg();
           setHiddenBtn(true);
-        } else {
+        }
+        else {
           setImages((prevImages) => (prevImages ? [...prevImages, ...hits] : hits));
         }
         if (12 * page > totalHits) {
@@ -40,7 +44,7 @@ export const ImageGallery = (props) => {
   }, [searchQuery, page]);
 
   useEffect(() => {
-    if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page) {
+    if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page || props.searchQuery !== '') {
       setLoading(true);
       setPage(1);
       setHiddenBtn(false);
