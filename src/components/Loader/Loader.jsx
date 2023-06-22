@@ -16,7 +16,7 @@ export class Loader extends Component {
             ariaLabel="oval-loading"
             secondaryColor="#4fa94d"
             strokeWidth={2}
-            strokeWidthSecondary={2}
+            strokeWidthSecondary={2} 
             />
         );
     }

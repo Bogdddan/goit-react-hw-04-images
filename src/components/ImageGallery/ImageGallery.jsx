@@ -14,24 +14,19 @@ export const ImageGallery = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const prevSearchQuery = useRef('');
-  const prevPage = useRef(1);
 
   const fetchImages = useCallback(() => {
     setLoading(true);
 
     fetchGalleryImg(searchQuery, page)
       .then(({ hits, totalHits }) => {
-        if(searchQuery === ''){
-          return
-        }
         if (hits.length === 0) {
           showErrorMsg();
           setHiddenBtn(true);
-        }
-        else {
+        } else {
           setImages((prevImages) => (prevImages ? [...prevImages, ...hits] : hits));
         }
-        if (12 * page > totalHits) {
+        if (12 * page >= totalHits) {
           setHiddenBtn(true);
         }
       })
@@ -44,16 +39,20 @@ export const ImageGallery = (props) => {
   }, [searchQuery, page]);
 
   useEffect(() => {
-    if (prevSearchQuery.current !== props.searchQuery || prevPage.current !== page || props.searchQuery !== '') {
+    if (prevSearchQuery.current !== props.searchQuery) {
       setLoading(true);
       setPage(1);
       setHiddenBtn(false);
       setSearchQuery(props.searchQuery);
-      fetchImages();
     }
     prevSearchQuery.current = props.searchQuery;
-    prevPage.current = page;
-  }, [props.searchQuery, page, fetchImages]);
+  }, [props.searchQuery]);
+
+  useEffect(() => {
+    if (searchQuery.trim() !== '') {
+      fetchImages();
+    }
+  }, [searchQuery, fetchImages]);
 
   const showErrorMsg = () => {
     toast.error(`За вашим результатом нічого не знайдено`);
