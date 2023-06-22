@@ -17,7 +17,7 @@ export const ImageGallery = (props) => {
 
   const fetchImages = useCallback(() => {
     setLoading(true);
-
+    
     fetchGalleryImg(searchQuery, page)
       .then(({ hits, totalHits }) => {
         if (hits.length === 0) {
@@ -47,6 +47,10 @@ export const ImageGallery = (props) => {
     }
     prevSearchQuery.current = props.searchQuery;
   }, [props.searchQuery]);
+
+  useEffect(() => {
+    setImages(null)
+  } , [searchQuery])
 
   useEffect(() => {
     if (searchQuery.trim() !== '') {
